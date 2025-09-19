@@ -2,13 +2,15 @@ import cv2
 import os
 import time
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def guided_capture():
     student_name = input("Digite seu nome (sem espaços ou caracteres especiais): ")
     if not student_name:
         print("Nome inválido.")
         return
 
-    dataset_path = 'dataset'
+    dataset_path = os.path.join(BASE_DIR, 'dataset')
     student_path = os.path.join(dataset_path, student_name)
 
     if not os.path.exists(student_path):

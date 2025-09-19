@@ -5,13 +5,16 @@ import numpy as np
 from PIL import Image
 import cv2
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'database.db')
+MODELS_DIR = os.path.join(BASE_DIR, 'models')
+
 def ensure_arcface():
     try:
         from arcface_onnx import ArcFaceONNX
         import onnxruntime as ort  # noqa: F401
-        models_dir = 'models'
-        os.makedirs(models_dir, exist_ok=True)
-        model_path = os.path.join(models_dir, 'face_recognition_sface_2021dec.onnx')
+        os.makedirs(MODELS_DIR, exist_ok=True)
+        model_path = os.path.join(MODELS_DIR, 'face_recognition_sface_2021dec.onnx')
         if not os.path.exists(model_path):
             urls = [
                 'https://github.com/opencv/opencv_zoo/raw/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx',
@@ -31,14 +34,14 @@ def ensure_arcface():
         return None
 
 def train_model():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute("DELETE FROM encodings")
     cursor.execute("DELETE FROM students")
     conn.commit()
 
-    dataset_path = 'dataset'
+    dataset_path = os.path.join(BASE_DIR, 'dataset')
     if not os.path.exists(dataset_path):
         print(f"Diretório '{dataset_path}' não encontrado. Crie o diretório e adicione as imagens dos alunos.")
         return

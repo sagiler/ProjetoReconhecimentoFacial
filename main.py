@@ -9,13 +9,16 @@ from collections import deque
 import threading
 from typing import Optional
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'database.db')
+MODELS_DIR = os.path.join(BASE_DIR, 'models')
+SOUNDS_DIR = os.path.join(BASE_DIR, 'sounds')
 def ensure_arcface():
     try:
         from arcface_onnx import ArcFaceONNX
-        import onnxruntime as ort  
-        models_dir = 'models'
-        os.makedirs(models_dir, exist_ok=True)
-        model_path = os.path.join(models_dir, 'face_recognition_sface_2021dec.onnx')
+        import onnxruntime as ort  # noqa: F401
+        os.makedirs(MODELS_DIR, exist_ok=True)
+        model_path = os.path.join(MODELS_DIR, 'face_recognition_sface_2021dec.onnx')
         if not os.path.exists(model_path):
             urls = [
                 'https://github.com/opencv/opencv_zoo/raw/main/models/face_recognition_sface/face_recognition_sface_2021dec.onnx',
@@ -42,12 +45,12 @@ DETECT_EVERY_N = 3
 SIM_THRESHOLD = 0.65
 
 def _play_beep_async():
-    sound_path = os.path.join('sounds', 'beep.wav')
+    sound_path = os.path.join(SOUNDS_DIR, 'beep.wav')
     if os.path.exists(sound_path):
         threading.Thread(target=playsound, args=(sound_path,), daemon=True).start()
 
 def load_encodings_from_db():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
         SELECT s.name, e.encoding
@@ -65,7 +68,7 @@ def load_encodings_from_db():
     return known_face_encodings, known_face_names
 
 def mark_attendance(student_name):
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DB_PATH)
     try:
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM students WHERE name = ?", (student_name,))
@@ -229,6 +232,6 @@ def main():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    if not os.path.exists('sounds'):
-        os.makedirs('sounds')
+    if not os.path.exists(SOUNDS_DIR):
+        os.makedirs(SOUNDS_DIR)
     main()
