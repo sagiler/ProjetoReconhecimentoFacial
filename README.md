@@ -1,6 +1,6 @@
 # Reconhecimento Facial para Presença em Sala (IoT)
 
-![Build](https://github.com/SEU_USUARIO/ProjetoReconhecimentoFacial/actions/workflows/ci.yml/badge.svg)
+![Build](https://github.com/klebr55/ProjetoReconhecimentoFacial/actions/workflows/ci.yml/badge.svg)
 
 Aplicação em Python que usa OpenCV e DeepFace para reconhecer rostos de alunos e marcar presença em um banco SQLite. A captura é feita via webcam e a interface exibe:
 
