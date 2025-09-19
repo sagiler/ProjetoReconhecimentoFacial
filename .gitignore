@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+*.egg-info/
+
+# Virtual envs
+.venv/
+.venv-*/
+venv/
+ENV/
+
+# IDE/OS
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Data and models
+*.db
+*.sqlite
+*.sqlite3
+*.h5
+*.hdf5
+*.onnx
+
+# Project data
+/dataset/
+/sounds/
+
+# Logs and artifacts
+*.log
+*.tmp
+*.cache/
+
+# Notebooks
+*.ipynb_checkpoints/
+
+# DeepFace cache
+*.deepface/

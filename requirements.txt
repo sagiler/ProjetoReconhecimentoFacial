@@ -1,0 +1,6 @@
+opencv-python
+deepface
+numpy
+Pillow
+playsound==1.2.2
+imutils
