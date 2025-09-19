@@ -5,6 +5,7 @@ from deepface import DeepFace
 from playsound import playsound
 import os
 import time
+from collections import deque
 import threading
 from typing import Optional
 
@@ -65,20 +66,25 @@ def load_encodings_from_db():
 
 def mark_attendance(student_name):
     conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT id FROM students WHERE name = ?", (student_name,))
-    student_id_row = cursor.fetchone()
-    if student_id_row:
-        student_id = student_id_row[0]
-        cursor.execute("SELECT * FROM attendance WHERE student_id = ? AND DATE(timestamp) = DATE('now')", (student_id,))
-        if not cursor.fetchone():
-            cursor.execute("INSERT INTO attendance (student_id) VALUES (?)", (student_id,))
-            conn.commit()
-            print(f"Presença de {student_name} registrada.")
-            _play_beep_async()
-            return True
-    conn.close()
-    return False
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM students WHERE name = ?", (student_name,))
+        student_id_row = cursor.fetchone()
+        if student_id_row:
+            student_id = student_id_row[0]
+            cursor.execute(
+                "SELECT 1 FROM attendance WHERE student_id = ? AND DATE(timestamp) = DATE('now')",
+                (student_id,)
+            )
+            if not cursor.fetchone():
+                cursor.execute("INSERT INTO attendance (student_id) VALUES (?)", (student_id,))
+                conn.commit()
+                print(f"Presença de {student_name} registrada.")
+                _play_beep_async()
+                return True
+        return False
+    finally:
+        conn.close()
 
 def main():
     known_face_encodings, known_face_names = load_encodings_from_db()
@@ -102,8 +108,10 @@ def main():
     present_students = set()
     frame_count = 0
     last_faces = []  # list of (x, y, x2, y2, name)
-    last_time = time.time()
+    last_time = time.perf_counter()
+    frame_times = deque(maxlen=30)
     fps = 0.0
+    last_detect_ms = 0.0
 
     while True:
         ret, frame = video_capture.read()
@@ -115,6 +123,7 @@ def main():
         try:
             if frame_count % DETECT_EVERY_N == 0:
                 detected_this_frame = True
+                t0 = time.perf_counter()
                 h0, w0 = frame.shape[:2]
                 if w0 > TARGET_WIDTH:
                     scale = TARGET_WIDTH / float(w0)
@@ -172,11 +181,14 @@ def main():
                         if sims[best_idx] > SIM_THRESHOLD:
                             name = known_face_names[best_idx]
                             if name not in present_students:
-                                if mark_attendance(name):
-                                    present_students.add(name)
+                                # Marca presença (somente primeira vez no dia) e sempre adiciona ao conjunto da sessão
+                                _ = mark_attendance(name)
+                                present_students.add(name)
                             current_visible_names.add(name)
 
                     last_faces.append((x, y, x2, y2, name))
+                t1 = time.perf_counter()
+                last_detect_ms = (t1 - t0) * 1000.0
 
             # draw cached results every frame (cheap)
             for (x, y, x2, y2, name) in last_faces:
@@ -185,15 +197,19 @@ def main():
         except Exception:
             pass
 
-        # FPS
-        now = time.time()
+        # FPS (média móvel das últimas ~30 frames)
+        now = time.perf_counter()
         dt = now - last_time
         if dt > 0:
-            inst = 1.0 / dt
-            fps = (fps * 0.9 + inst * 0.1) if fps > 0 else inst
+            frame_times.append(dt)
+            total_time = sum(frame_times)
+            if total_time > 0:
+                fps = len(frame_times) / total_time
         last_time = now
         frame_count += 1
 
+        # Live count: derive dos nomes presentes em last_faces (evita zerar entre frames sem detecção)
+        current_visible_names = {name for (_, _, _, _, name) in last_faces if name != "Desconhecido"}
         live_count = len(current_visible_names)
         cv2.putText(frame, f"Na sala agora: {live_count}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         cv2.putText(frame, f"Total presentes: {len(present_students)}", (10, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
@@ -202,7 +218,7 @@ def main():
             cv2.putText(frame, "Nenhum rosto detectado", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
         provider = 'CPU' if arc is None else (arc.active_providers[0] if getattr(arc, 'active_providers', None) else 'CPU')
-        cv2.putText(frame, f"FPS: {fps:.1f} | EP: {provider} | Detect/skip: {DETECT_EVERY_N}", (10, 135), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 255, 200), 2)
+        cv2.putText(frame, f"FPS: {fps:.1f} | EP: {provider} | Detect/skip: {DETECT_EVERY_N} | Detect ms: {last_detect_ms:.0f}", (10, 135), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 255, 200), 2)
         cv2.putText(frame, f"Caixas: {len(last_faces)}", (10, 160), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 200, 255), 2)
 
         cv2.imshow('Video', frame)
