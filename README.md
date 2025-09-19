@@ -87,6 +87,29 @@ python capture_images_guided.py
 ```
 As imagens serão salvas em `dataset/NOME_ALUNO/`.
 
+### Captura Guiada (UX estilo Face ID)
+
+O `capture_images_guided.py` guia o usuário por 9 poses (centro, direita, esquerda, cima, baixo e diagonais), com:
+- Círculo guia e anel de progresso.
+- Dicas contextuais (aproxime/afaste, iluminação, direção do olhar).
+- Validação de qualidade: tamanho do rosto, foco (Laplacian), brilho, estabilidade e direção.
+- Renderização de textos com acentos via Pillow (melhor legibilidade em PT-BR).
+- Detectores com fallback: mediapipe → mtcnn → opencv (se mediapipe não estiver disponível no seu Python, o script funciona com os demais).
+- Captura automática quando as condições estão OK (beep de confirmação).
+
+Modos e atalhos:
+- Modo de sensibilidade: EASY (padrão), BALANCED, STRICT — teclas E/B/S.
+- Ajustes finos ao vivo:
+  - DiagThr: [ / ]
+  - AxisThr: , / .
+  - Tolerância angular: (diagonal) 1/2, (eixo) 5/6
+  - Magnitude mínima: (diagonal) 3/4, (eixo) 7/8
+  - Pular passo: P, Recomeçar: R, Sair: Q
+
+Observações sobre MediaPipe:
+- Em algumas combinações (por exemplo, Python 3.13/Windows), `mediapipe` pode não ter wheel disponível. O script lida com isso e segue com MTCNN/OpenCV.
+- Se quiser head-pose mais robusto (pitch/yaw) e sua versão suportar, instale: `pip install mediapipe`.
+
 3. Treinar embeddings:
 ```powershell
 python train_model.py
@@ -128,6 +151,7 @@ Parâmetros no topo do `main.py` que você pode ajustar:
 ## Solução de problemas
 
 - "Nenhum rosto detectado": aproxime-se, centralize o rosto, melhore a luz. Hoje a ordem padrão é: mediapipe → mtcnn → opencv (com fallback automático).
+- Diagonais para cima difíceis de acionar na captura guiada: use Modo EASY (tecla E) e, se necessário, aumente a tolerância angular (2) e/ou reduza a magnitude mínima (3). O HUD mostra os valores atuais.
 - Lento na sua máquina: podemos fixar o detector primário para `mediapipe` e usar `opencv` como fallback. 
 - Erro com TensorFlow: atualize pip (`python -m pip install -U pip`) e reinstale `deepface`. Caso veja `tf-keras` ausente, instale com `pip install tf-keras`.
 
