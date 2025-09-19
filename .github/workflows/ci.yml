@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,18 +18,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install dependencies (minimal for smoke test)
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install opencv-python numpy Pillow
 
       - name: Smoke test - import modules
+        shell: bash
         run: |
           python - << 'PY'
           import cv2
           import numpy
           import PIL
-          import importlib
           import sys
           print('Python', sys.version)
           print('OpenCV', cv2.__version__)
