@@ -1,5 +1,7 @@
 # Reconhecimento Facial para Presença em Sala (IoT)
 
+![Build](https://github.com/SEU_USUARIO/ProjetoReconhecimentoFacial/actions/workflows/ci.yml/badge.svg)
+
 Aplicação em Python que usa OpenCV e DeepFace para reconhecer rostos de alunos e marcar presença em um banco SQLite. A captura é feita via webcam e a interface exibe:
 
 - Na sala agora: quantidade de alunos reconhecidos visíveis no momento
@@ -122,4 +124,4 @@ git push -u origin main
 
 ## Licença
 
-Escolha e adicione uma licença (ex.: MIT). Você pode criar um arquivo `LICENSE` com o texto apropriado.
+Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
