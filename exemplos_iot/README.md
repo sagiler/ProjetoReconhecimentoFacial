@@ -1,5 +1,3 @@
-# Exemplos IoT com Reconhecimento Facial (Sala de Aula)
-## Requisitos opcionais
 # Exemplos IoT com Reconhecimento Facial (Sala de Aula) — Guia para Professores
 
 Este diretório contém três exemplos práticos que mostram como o sistema de reconhecimento facial do projeto pode se integrar com dispositivos e serviços IoT em sala de aula.
