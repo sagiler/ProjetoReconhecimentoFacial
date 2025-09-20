@@ -1,0 +1,86 @@
+[
+  {
+    "type": "student_present",
+    "name": "Alice",
+    "visible_now": 1,
+    "total_present": 0,
+    "timestamp": 1758332996953
+  },
+  {
+    "type": "attendance_marked",
+    "name": "Alice",
+    "timestamp": 1758332997454,
+    "recognized": true
+  },
+  {
+    "type": "serial_cmd",
+    "cmd": "GRANT:Alice\\n",
+    "timestamp": 1758332997454
+  },
+  {
+    "type": "http_light",
+    "visible_now": 1,
+    "brightness": 97,
+    "timestamp": 1758332999550
+  },
+  {
+    "type": "student_present",
+    "name": "Bob",
+    "visible_now": 2,
+    "total_present": 1,
+    "timestamp": 1758332999950
+  },
+  {
+    "type": "attendance_marked",
+    "name": "Bob",
+    "timestamp": 1758333000451,
+    "recognized": true
+  },
+  {
+    "type": "serial_cmd",
+    "cmd": "GRANT:Bob\\n",
+    "timestamp": 1758333000451
+  },
+  {
+    "type": "http_light",
+    "visible_now": 2,
+    "brightness": 114,
+    "timestamp": 1758333001146
+  },
+  {
+    "type": "student_present",
+    "name": "Carol",
+    "visible_now": 3,
+    "total_present": 2,
+    "timestamp": 1758333001546
+  },
+  {
+    "type": "attendance_marked",
+    "name": "Carol",
+    "timestamp": 1758333002046,
+    "recognized": true
+  },
+  {
+    "type": "serial_cmd",
+    "cmd": "GRANT:Carol\\n",
+    "timestamp": 1758333002046
+  },
+  {
+    "type": "http_light",
+    "visible_now": 3,
+    "brightness": 131,
+    "timestamp": 1758333004190
+  },
+  {
+    "type": "http_light",
+    "visible_now": 2,
+    "brightness": 114,
+    "timestamp": 1758333007362
+  },
+  {
+    "type": "http_light",
+    "visible_now": 1,
+    "brightness": 97,
+    "timestamp": 1758333008283
+  }
+]
