@@ -1,0 +1,3 @@
+# Dependências opcionais para os exemplos em examples_iot
+paho-mqtt>=1.6.1
+pyserial>=3.5
