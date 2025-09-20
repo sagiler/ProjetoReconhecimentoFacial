@@ -1,0 +1,3 @@
+# Dependências opcionais para os exemplos IoT
+paho-mqtt
+pyserial
